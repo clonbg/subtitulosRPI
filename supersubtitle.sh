@@ -28,16 +28,43 @@ while read video ; do
    if [ -f "$sincronizado" ]
    then
       echo "Existe $sincronizado"
-      DIA=`date +"%d/%m/%Y"`
-      HORA=`date +"%H:%M"`
-      echo "$DIA - $HORA : Existe $sincronizado" >> salida.log
+      #DIA=`date +"%d/%m/%Y"`
+      #HORA=`date +"%H:%M"`
+      #echo "$DIA - $HORA : Existe $sincronizado" >> salida.log
    else
       echo "No existe $sincronizado"
       if [ -f "$subtitulo" ]
       then
          echo "Existe $subtitulo"
+         autosubsync $video $subtitulo $sincronizado
+         if [ -f $sincronizado ]
+         then
+            DIA=`date +"%d/%m/%Y"`
+            HORA=`date +"%H:%M"`
+            echo "$DIA - $HORA : Creado $sincronizado" >> salida.log
+         fi
       else
          echo "No existe $subtitulo"
+         subliminal download -l es -f $video
+         if [ -f $subtitulo ]
+         then
+            DIA=`date +"%d/%m/%Y"`
+            HORA=`date +"%H:%M"`
+            echo "$DIA - $HORA : Descargado $subtitulo" >> salida.log
+            autosubsync $video $subtitulo $sincronizado
+            if [ -f $sincronizado ]
+            then
+               DIA=`date +"%d/%m/%Y"`
+               HORA=`date +"%H:%M"`
+               echo "$DIA - $HORA : Creado $sincronizado" >> salida.log
+               rm "$subtitulo"
+               echo "$DIA - $HORA : Eliminado $subtitulo" >> salida.log
+            fi
+         else
+            DIA=`date +"%d/%m/%Y"`
+            HORA=`date +"%H:%M"`
+            echo "$DIA - $HORA : Descarga de subtitulos fallida" >> salida.log
+         fi
       fi
    fi
 done <<< "`cat videos.log`"
