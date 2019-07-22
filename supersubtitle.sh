@@ -36,12 +36,14 @@ while read video ; do
       if [ -f "$subtitulo" ]
       then
          echo "Existe $subtitulo"
-         autosubsync $video $subtitulo $sincronizado
+         autosubsync $video $subtitulo $sincronizado < /dev/null
          if [ -f $sincronizado ]
          then
             DIA=`date +"%d/%m/%Y"`
             HORA=`date +"%H:%M"`
             echo "$DIA - $HORA : Creado $sincronizado" >> salida.log
+	    rm "$subtitulo"
+            echo "$DIA - $HORA : Eliminado $subtitulo" >> salida.log
          fi
       else
          echo "No existe $subtitulo"
@@ -51,7 +53,7 @@ while read video ; do
             DIA=`date +"%d/%m/%Y"`
             HORA=`date +"%H:%M"`
             echo "$DIA - $HORA : Descargado $subtitulo" >> salida.log
-            autosubsync $video $subtitulo $sincronizado
+            autosubsync $video $subtitulo $sincronizado < /dev/null
             if [ -f $sincronizado ]
             then
                DIA=`date +"%d/%m/%Y"`
