@@ -4,13 +4,15 @@ IFS='
 '
 
 RUTA=/media/series
+SALIDA=/home/dietpi/subtitulosRPI/salida.log
+LISTA=/home/dietpi/subtitulosRPI/videos.log
 # Instalar subliminal
 
 #########    subliminal download -l es -f $RUTA
 
-find /media/series -name *.mp4 > videos.log
-find /media/series -name *.avi >> videos.log
-find /media/series -name *.mkv >> videos.log
+find $RUTA -name *.mp4 > $LISTA
+find $RUTA -name *.avi >> $LISTA
+find $RUTA -name *.mkv >> $LISTA
 
 #Leer el archivo salida.log linea a linea
 
@@ -30,7 +32,7 @@ while read video ; do
       echo "Existe $sincronizado"
       #DIA=`date +"%d/%m/%Y"`
       #HORA=`date +"%H:%M"`
-      #echo "$DIA - $HORA : Existe $sincronizado" >> salida.log
+      #echo "$DIA - $HORA : Existe $sincronizado" >> $SALIDA
    else
       echo "No existe $sincronizado"
       if [ -f "$subtitulo" ]
@@ -41,9 +43,11 @@ while read video ; do
          then
             DIA=`date +"%d/%m/%Y"`
             HORA=`date +"%H:%M"`
-            echo "$DIA - $HORA : Creado $sincronizado" >> salida.log
+            echo "$DIA - $HORA : Creado $sincronizado" >> $SALIDA
 	    rm "$subtitulo"
-            echo "$DIA - $HORA : Eliminado $subtitulo" >> salida.log
+            echo "$DIA - $HORA : Eliminado $subtitulo" >> $SALIDA
+	 else
+	echo "else"
          fi
       else
          echo "No existe $subtitulo"
@@ -52,20 +56,22 @@ while read video ; do
          then
             DIA=`date +"%d/%m/%Y"`
             HORA=`date +"%H:%M"`
-            echo "$DIA - $HORA : Descargado $subtitulo" >> salida.log
+            echo "$DIA - $HORA : Descargado $subtitulo" >> $SALIDA
             autosubsync $video $subtitulo $sincronizado < /dev/null
             if [ -f $sincronizado ]
             then
                DIA=`date +"%d/%m/%Y"`
                HORA=`date +"%H:%M"`
-               echo "$DIA - $HORA : Creado $sincronizado" >> salida.log
+               echo "$DIA - $HORA : Creado $sincronizado" >> $SALIDA
                rm "$subtitulo"
-               echo "$DIA - $HORA : Eliminado $subtitulo" >> salida.log
+               echo "$DIA - $HORA : Eliminado $subtitulo" >> $SALIDA
+	    else
+	    echo "else"
             fi
          else
             DIA=`date +"%d/%m/%Y"`
             HORA=`date +"%H:%M"`
-            echo "$DIA - $HORA : Descarga de subtitulos fallida" >> salida.log
+            echo "$DIA - $HORA : Descarga de subtitulos fallida" >> $SALIDA
          fi
       fi
    fi
