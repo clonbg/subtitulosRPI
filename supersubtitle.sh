@@ -33,6 +33,13 @@ while read video ; do
       #DIA=`date +"%d/%m/%Y"`
       #HORA=`date +"%H:%M"`
       #echo "$DIA - $HORA : Existe $sincronizado" >> $SALIDA
+      if [ -f "$subtitulo" ]
+      then
+         DIA=`date +"%d/%m/%Y"`
+         HORA=`date +"%H:%M"`
+         rm $subtitulo
+         echo "$DIA - $HORA : Eliminado $subtitulo" >> $SALIDA
+      fi
    else
       echo "No existe $sincronizado"
       if [ -f "$subtitulo" ]
@@ -44,10 +51,10 @@ while read video ; do
             DIA=`date +"%d/%m/%Y"`
             HORA=`date +"%H:%M"`
             echo "$DIA - $HORA : Creado $sincronizado" >> $SALIDA
-	    rm "$subtitulo"
+	         rm "$subtitulo"
             echo "$DIA - $HORA : Eliminado $subtitulo" >> $SALIDA
-	 else
-	echo "else"
+	      else
+	         echo "else"
          fi
       else
          echo "No existe $subtitulo"
@@ -65,8 +72,8 @@ while read video ; do
                echo "$DIA - $HORA : Creado $sincronizado" >> $SALIDA
                rm "$subtitulo"
                echo "$DIA - $HORA : Eliminado $subtitulo" >> $SALIDA
-	    else
-	    echo "else"
+            else
+	            echo "else"
             fi
          else
             DIA=`date +"%d/%m/%Y"`
