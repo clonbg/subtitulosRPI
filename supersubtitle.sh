@@ -13,6 +13,7 @@ LISTA=/home/dietpi/subtitulosRPI/videos.log
 find $RUTA -name *.mp4 > $LISTA
 find $RUTA -name *.avi >> $LISTA
 find $RUTA -name *.mkv >> $LISTA
+sed -i '/Mira lo que/d' $LISTA
 
 #Leer el archivo salida.log linea a linea
 
