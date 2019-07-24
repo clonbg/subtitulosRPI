@@ -79,7 +79,7 @@ while read video ; do
          else
             DIA=`date +"%d/%m/%Y"`
             HORA=`date +"%H:%M"`
-            echo "$DIA - $HORA : Descarga de subtitulos fallida" >> $SALIDA
+            echo "$DIA - $HORA : Descarga de subtitulos fallida $video" >> $SALIDA
          fi
       fi
    fi
