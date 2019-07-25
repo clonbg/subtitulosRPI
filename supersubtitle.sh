@@ -15,7 +15,7 @@ find $RUTA -name *.avi >> $LISTA
 find $RUTA -name *.mkv >> $LISTA
 sed -i '/Mira lo que/d' $LISTA
 
-#Leer el archivo salida.log linea a linea
+#Leer el archivo videos.log linea a linea
 
 while read video ; do
    #rm "$linea"
@@ -59,7 +59,7 @@ while read video ; do
          fi
       else
          echo "No existe $subtitulo"
-         subliminal download -l es -f $video
+         subliminal download -l es $video
          if [ -f $subtitulo ]
          then
             DIA=`date +"%d/%m/%Y"`
@@ -83,5 +83,6 @@ while read video ; do
          fi
       fi
    fi
-done <<< "`cat videos.log`"
+done <<< "`cat $LISTA`"
 
+rm $LISTA
