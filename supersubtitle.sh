@@ -6,6 +6,8 @@ IFS='
 RUTA=/media/series
 SALIDA=/home/dietpi/subtitulosRPI/salida.log
 LISTA=/home/dietpi/subtitulosRPI/videos.log
+SINCRO=/home/dietpi/subtitulosRPI/sincro.log
+
 # Instalar subliminal
 
 #########    subliminal download -l es -f $RUTA
@@ -46,7 +48,7 @@ while read video ; do
       if [ -f "$subtitulo" ]
       then
          echo "Existe $subtitulo"
-         autosubsync $video $subtitulo $sincronizado < /dev/null
+         autosubsync $video $subtitulo $sincronizado < /dev/null 2> $SINCRO
          if [ -f $sincronizado ]
          then
             DIA=`date +"%d/%m/%Y"`
@@ -54,8 +56,11 @@ while read video ; do
             echo "$DIA - $HORA : Creado $sincronizado" >> $SALIDA
 	         rm "$subtitulo"
             echo "$DIA - $HORA : Eliminado $subtitulo" >> $SALIDA
-	      else
-	         echo "else"
+         fi
+         if [[ -s $SINCRO ]]
+         then
+         rm $sincronizado
+         echo "Eliminados subtitulos, no era el subtitulo correcto" >> $SALIDA
          fi
       else
          echo "No existe $subtitulo"
@@ -65,7 +70,7 @@ while read video ; do
             DIA=`date +"%d/%m/%Y"`
             HORA=`date +"%H:%M"`
             echo "$DIA - $HORA : Descargado $subtitulo" >> $SALIDA
-            autosubsync $video $subtitulo $sincronizado < /dev/null
+            autosubsync $video $subtitulo $sincronizado < /dev/null 2> $SINCRO
             if [ -f $sincronizado ]
             then
                DIA=`date +"%d/%m/%Y"`
@@ -73,8 +78,11 @@ while read video ; do
                echo "$DIA - $HORA : Creado $sincronizado" >> $SALIDA
                rm "$subtitulo"
                echo "$DIA - $HORA : Eliminado $subtitulo" >> $SALIDA
-            else
-	            echo "else"
+            fi
+            if [[ -s $SINCRO ]]
+            then
+            rm $sincronizado
+            echo "Eliminados subtitulos, no era el subtitulo correcto" >> $SALIDA
             fi
          else
             DIA=`date +"%d/%m/%Y"`
